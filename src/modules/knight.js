@@ -5,6 +5,17 @@ class Knight {
     this.board = board;
   }
 
+  possibleMoves = [
+    [-2, -1],
+    [-1, -2],
+    [-2, 1],
+    [-1, 2],
+    [-1, 2],
+    [1, 2],
+    [2, 1],
+    [2, -1],
+  ];
+
   moves(start) {
     const bfsInfo = [];
 

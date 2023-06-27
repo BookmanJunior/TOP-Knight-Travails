@@ -16,6 +16,13 @@ class Knight {
     [2, -1],
   ];
 
+  getValidMoves = (start) =>
+    this.possibleMoves
+      .filter((square) =>
+        square.every((move, index) => move + start[index] >= 0)
+      )
+      .map((square) => [square[0] + start[0], square[1] + start[1]]);
+
   moves(start) {
     const bfsInfo = [];
 

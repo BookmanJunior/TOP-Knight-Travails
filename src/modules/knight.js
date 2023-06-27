@@ -23,6 +23,24 @@ class Knight {
       )
       .map((square) => [square[0] + start[0], square[1] + start[1]]);
 
+  // iterative approach
+  // getValidMoves = (start) => {
+  //   const allMoves = [];
+
+  //   for (let i = 0; i < this.possibleMoves.length; i++) {
+
+  //     const x = this.possibleMoves[i][0];
+  //     const y = this.possibleMoves[i][1];
+  //     const nextX = x + start[0];
+  //     const nextY = y + start[1];
+
+  //     if (nextX >= 0 && nextY >= 0) {
+  //       allMoves.push([nextX, nextY]);
+  //     }
+  //   }
+  //   return allMoves;
+  // };
+
   moves(start) {
     const bfsInfo = [];
 

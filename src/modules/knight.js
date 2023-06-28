@@ -1,4 +1,5 @@
 import Queue from "./queue.js";
+import { isTheTarget, hasVisited, reconstructPath } from "./helpers.js";
 
 class Knight {
   possibleMoves = [
@@ -23,8 +24,8 @@ class Knight {
       const firstQItem = queue.dequeue();
       const allPossibleMoves = this.getValidMoves(firstQItem);
 
-      if (this.isTheTarget(firstQItem, end)) {
-        const path = this.reconstructPath(parent, end);
+      if (isTheTarget(firstQItem, end)) {
+        const path = reconstructPath(parent, end);
         console.log(
           `You made it in ${path.length - 1} moves! Here's your path:`
         );
@@ -37,9 +38,9 @@ class Knight {
       for (let i = 0; i < allPossibleMoves.length; i++) {
         const currNeighbor = allPossibleMoves[i];
 
-        if (this.isTheTarget(currNeighbor, end)) {
+        if (isTheTarget(currNeighbor, end)) {
           parent[currNeighbor] = firstQItem;
-          const path = this.reconstructPath(parent, end);
+          const path = reconstructPath(parent, end);
           console.log(
             `You made it in ${path.length - 1} moves! Here's your path:`
           );
@@ -49,14 +50,13 @@ class Knight {
           return;
         }
 
-        if (!this.hasVisited(currNeighbor, visited)) {
+        if (!hasVisited(currNeighbor, visited)) {
           parent[currNeighbor] = firstQItem;
           visited.push(currNeighbor);
           queue.enqueue(currNeighbor);
         }
       }
     }
-    return this.reconstructPath(parent, end);
   }
 
   getValidMoves = (start) =>
@@ -83,25 +83,6 @@ class Knight {
   //   }
   //   return allMoves;
   // };
-
-  isTheTarget(square, target) {
-    return square.every((move, index) => move === target[index]);
-  }
-
-  hasVisited(curr, arr) {
-    return arr.find((move) => move.every((m, index) => m === curr[index]));
-  }
-
-  reconstructPath(parent, end) {
-    let currNode = end;
-    const path = [];
-    while (currNode !== null) {
-      path.push(currNode);
-      currNode = parent[currNode];
-    }
-    path.reverse();
-    return path;
-  }
 }
 
 export default Knight;

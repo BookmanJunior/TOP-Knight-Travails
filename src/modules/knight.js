@@ -13,35 +13,50 @@ class Knight {
   ];
 
   moves(start, end) {
+    const parent = {};
     const visited = [start];
+
     const queue = new Queue(start);
+    parent[start] = null;
 
     while (!queue.isEmpty()) {
       const firstQItem = queue.dequeue();
       const allPossibleMoves = this.getValidMoves(firstQItem);
 
       if (this.isTheTarget(firstQItem, end)) {
-        console.log(`Found it`);
-        visited.push(end);
-        return visited;
+        const path = this.reconstructPath(parent, end);
+        console.log(
+          `You made it in ${path.length - 1} moves! Here's your path:`
+        );
+        path.forEach((square) => {
+          console.log(square);
+        });
+        return;
       }
 
       for (let i = 0; i < allPossibleMoves.length; i++) {
         const currNeighbor = allPossibleMoves[i];
 
         if (this.isTheTarget(currNeighbor, end)) {
-          console.log(`Found it`);
-          visited.push(end);
-          return visited;
+          parent[currNeighbor] = firstQItem;
+          const path = this.reconstructPath(parent, end);
+          console.log(
+            `You made it in ${path.length - 1} moves! Here's your path:`
+          );
+          path.forEach((square) => {
+            console.log(square);
+          });
+          return;
         }
 
         if (!this.hasVisited(currNeighbor, visited)) {
+          parent[currNeighbor] = firstQItem;
           visited.push(currNeighbor);
           queue.enqueue(currNeighbor);
         }
       }
     }
-    return visited;
+    return this.reconstructPath(parent, end);
   }
 
   getValidMoves = (start) =>
@@ -75,6 +90,17 @@ class Knight {
 
   hasVisited(curr, arr) {
     return arr.find((move) => move.every((m, index) => m === curr[index]));
+  }
+
+  reconstructPath(parent, end) {
+    let currNode = end;
+    const path = [];
+    while (currNode !== null) {
+      path.push(currNode);
+      currNode = parent[currNode];
+    }
+    path.reverse();
+    return path;
   }
 }
 
